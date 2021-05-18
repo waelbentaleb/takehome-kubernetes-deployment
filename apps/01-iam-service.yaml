@@ -22,7 +22,10 @@ spec:
         - name: NODE_ENV
           value: production
         - name: DATABASE_URL
-          value: mongodb+srv://root:root@cluster0.34ifq.mongodb.net/iamservice?retryWrites=true&w=majority
+          valueFrom:
+            secretKeyRef:
+              name: takehome-secrets
+              key: iam_database_url
         ports:
         - containerPort: 3000
 ---

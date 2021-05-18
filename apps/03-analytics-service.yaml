@@ -24,7 +24,10 @@ spec:
         - name: IAM_SERVICE_URL
           value: http://iam-service/api/v1
         - name: DATABASE_URL
-          value: mongodb+srv://root:root@cluster0.34ifq.mongodb.net/analyticsservice?retryWrites=true&w=majority
+          valueFrom:
+            secretKeyRef:
+              name: takehome-secrets
+              key: analytics_database_url
         ports:
         - containerPort: 3020
 ---
