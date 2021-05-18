@@ -13,29 +13,27 @@ metadata:
 spec:
   tls:
   - hosts:
-    - iam.dejamobiletakehome.com
-    secretName: takehome-iam-cert
-    - cards.dejamobiletakehome.com
-    secretName: takehome-cards-cert
-    - analytics.dejamobiletakehome.com
-    secretName: takehome-analytics-cert
+    - iam.dejamobiletakehome.online
+    - cards.dejamobiletakehome.online
+    - analytics.dejamobiletakehome.online
+    secretName: takehome-cert
 
   rules:
-  - host: iam.dejamobiletakehome.com
+  - host: iam.dejamobiletakehome.online
     http:
       paths:
         - path: /
           backend:
             serviceName: iam-service
             servicePort: 80
-  - host: cards.dejamobiletakehome.com
+  - host: cards.dejamobiletakehome.online
     http:
       paths:
         - path: /
           backend:
             serviceName: digitized-cards-service
             servicePort: 80
-  - host: analytics.dejamobiletakehome.com
+  - host: analytics.dejamobiletakehome.online
     http:
       paths:
         - path: /
