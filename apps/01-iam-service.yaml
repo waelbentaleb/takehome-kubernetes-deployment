@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iam-service
+  labels:
+    app: iam-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iam-service
+  template:
+    metadata:
+      labels:
+        app: iam-service
+    spec:
+      containers:
+      - name: iam-service
+        image: waelben7/takehome-iam-service:latest
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: DATABASE_URL
+          value: mongodb+srv://root:root@cluster0.34ifq.mongodb.net/iamservice?retryWrites=true&w=majority
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iam-service
+spec:
+  selector:
+    app: iam-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000

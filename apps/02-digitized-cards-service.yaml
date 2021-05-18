@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: digitized-cards-service
+  labels:
+    app: digitized-cards-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: digitized-cards-service
+  template:
+    metadata:
+      labels:
+        app: digitized-cards-service
+    spec:
+      containers:
+      - name: digitized-cards-service
+        image: waelben7/takehome-digitized-cards-service:latest
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: IAM_SERVICE_URL
+          value: http://iam-service/api/v1
+        - name: DATABASE_URL
+          value: mongodb+srv://root:root@cluster0.34ifq.mongodb.net/cardservice?retryWrites=true&w=majority
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: digitized-cards-service
+spec:
+  selector:
+    app: digitized-cards-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000

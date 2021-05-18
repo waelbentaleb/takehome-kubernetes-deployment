@@ -1,0 +1,44 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: main-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+spec:
+  tls:
+  - hosts:
+    - iam.dejamobiletakehome.com
+    secretName: takehome-iam-cert
+    - cards.dejamobiletakehome.com
+    secretName: takehome-cards-cert
+    - analytics.dejamobiletakehome.com
+    secretName: takehome-analytics-cert
+
+  rules:
+  - host: iam.dejamobiletakehome.com
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: iam-service
+            servicePort: 80
+  - host: cards.dejamobiletakehome.com
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: digitized-cards-service
+            servicePort: 80
+  - host: analytics.dejamobiletakehome.com
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: analytics-service
+            servicePort: 80

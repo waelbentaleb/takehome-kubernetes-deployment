@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-service
+  labels:
+    app: analytics-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: analytics-service
+  template:
+    metadata:
+      labels:
+        app: analytics-service
+    spec:
+      containers:
+      - name: analytics-service
+        image: waelben7/takehome-analytics-service:latest        
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: IAM_SERVICE_URL
+          value: http://iam-service/api/v1
+        - name: DATABASE_URL
+          value: mongodb+srv://root:root@cluster0.34ifq.mongodb.net/analyticsservice?retryWrites=true&w=majority
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytics-service
+spec:
+  selector:
+    app: analytics-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
